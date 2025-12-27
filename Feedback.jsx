@@ -1,118 +1,70 @@
 import React, { useState } from "react";
 
-const Feedback = () => {
+function Feedback() {
   const [name, setName] = useState("");
+  const [rating, setRating] = useState("");
+  const [comments, setComments] = useState("");
   const [message, setMessage] = useState("");
-  const [feedbackList, setFeedbackList] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (name.trim() === "" || message.trim() === "") return;
+    if (!name || !rating || !comments) {
+      alert("❌ Please fill all fields");
+      return;
+    }
 
-    setFeedbackList([
-      ...feedbackList,
-      { name: name, message: message },
-    ]);
-
+    setMessage("✅ Thank you! Your feedback has been submitted.");
     setName("");
-    setMessage("");
-  };
-
-  const styles = {
-    container: {
-      width: "450px",
-      margin: "40px auto",
-      padding: "20px",
-      backgroundColor: "cyan",
-      borderRadius: "10px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-      fontFamily: "Arial, sans-serif",
-    },
-    title: {
-      textAlign: "center",
-      marginBottom: "15px",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      margin: "8px 0",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      fontSize: "14px",
-    },
-    button: {
-      width: "100%",
-      padding: "10px",
-      backgroundColor: "purple",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontSize: "15px",
-      marginTop: "10px",
-    },
-    feedbackBox: {
-      marginTop: "25px",
-    },
-    feedbackItem: {
-      backgroundColor: "#f4f6f8",
-      padding: "10px",
-      borderRadius: "5px",
-      marginBottom: "10px",
-    },
-    name: {
-      fontWeight: "bold",
-      color: "#333",
-    },
-    message: {
-      marginTop: "5px",
-      color: "#555",
-    },
+    setRating("");
+    setComments("");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}> Feedback Form</h2>
+    <div style={{ width: "350px", margin: "100px auto" }}>
+      <h2>Student Feedback Form</h2>
 
       <form onSubmit={handleSubmit}>
-        <input
-          style={styles.input}
-          type="text"
-          placeholder="Your Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <div>
+          <label>Student Name:</label><br />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-        <textarea
-          style={styles.input}
-          rows="4"
-          placeholder="Your Feedback"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        ></textarea>
+        <div>
+          <label>Rating:</label><br />
+          <select value={rating} onChange={(e) => setRating(e.target.value)}>
+            <option value="">Select Rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+          </select>
+        </div>
 
-        <button style={styles.button} type="submit">
+        <div>
+          <label>Comments:</label><br />
+          <textarea
+            rows="4"
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+          ></textarea>
+        </div>
+
+        <button type="submit" style={{ marginTop: "10px" }}>
           Submit Feedback
         </button>
       </form>
 
-      <div style={styles.feedbackBox}>
-        <h3> Submitted Feedback</h3>
-
-        {feedbackList.length === 0 && (
-          <p>No feedback submitted yet.</p>
-        )}
-
-        {feedbackList.map((item, index) => (
-          <div key={index} style={styles.feedbackItem}>
-            <div style={styles.name}>{item.name}</div>
-            <div style={styles.message}>{item.message}</div>
-          </div>
-        ))}
-      </div>
+      {message && (
+        <p style={{ marginTop: "15px", color: "green" }}>{message}</p>
+      )}
     </div>
   );
-};
+}
 
 export default Feedback;
